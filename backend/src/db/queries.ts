@@ -25,12 +25,19 @@ export const updateUser = async(id:string, data:Partial<NewUser>) => {
     return user;
 };
 
-export const upsertUser = async(data:NewUser) => {
-    const existingUser = await getUserByID(data.id);
-    if (existingUser) return existingUser;
 
-    return createUser(data);
-}
+export const upsertUser = async(data:NewUser) => {
+    const [user] = await db
+        .insert(users)
+        .values(data)
+        .onConflictDoNothing({ target: users.id })
+        .returning();
+
+    if (!user) {
+        return getUserByID(data.id);
+    }
+    return user;
+ }
 
 export const createProduct = async (data:NewProduct) => {
     const [product] = await db.insert(products).values(data).returning();
@@ -68,8 +75,11 @@ export const getProductByUserId = async (userId:string) => {
 }
 
 export const updateProduct = async(id:string, data:Partial<NewProduct>) => {
-    const [product] = await db.update(products).set(data).where(eq(products.id, id)).returning();
-    return product;
+    const [product] = await db.update(products).set({
+        ...data,
+        updatedAt: new Date(),
+    }).where(eq(products.id, id)).returning();
+     return product;
 };
 
 export const deleteProduct = async(id:string) => {
