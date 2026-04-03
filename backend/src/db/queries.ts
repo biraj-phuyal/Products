@@ -46,14 +46,14 @@ export const createProduct = async (data:NewProduct) => {
 
 /* Products */
 
-export const getAllProduct = async () => {
+export const getAllProducts = async () => {
     return db.query.products.findMany({
         with: {user:true},
         orderBy: (products, {desc}) => [desc(products.createdAt)],
     });
 }
 
-export const getProductById = async (id:string) => {
+export const getProductById = async (id : string) => {
     return db.query.products.findFirst({
         where : eq(products.id, id),
         with: {
@@ -66,13 +66,13 @@ export const getProductById = async (id:string) => {
     });
 };
 
-export const getProductByUserId = async (userId:string) => {
-    return db.query.products.findMany({
-        where : eq(products.userId, userId),
-        with: { user:true },
-        orderBy: (products, {desc}) => [desc(products.createdAt)],
-    });
-}
+export const getProductsByUserId = async (userId: string) => {
+  return db.query.products.findMany({
+    where: eq(products.userId, userId),
+    with: { user: true },
+    orderBy: (products, { desc }) => [desc(products.createdAt)],
+  });
+};
 
 export const updateProduct = async(id:string, data:Partial<NewProduct>) => {
     const [product] = await db.update(products).set({
@@ -89,7 +89,7 @@ export const deleteProduct = async(id:string) => {
 
 /* Comments */
 
-export const createComments = async (data:NewComment) => {
+export const createComment = async (data:NewComment) => {
     const [comment] = await db.insert(comments).values(data).returning();
     return comment;
 }
@@ -99,7 +99,7 @@ export const deleteComment = async(id:string) => {
     return comment;
 };
 
-export const getcommentById = async (id:string) => {
+export const getCommentById = async (id:string) => {
     return db.query.comments.findFirst({
         where : eq(comments.id, id),
         with: {user:true},
