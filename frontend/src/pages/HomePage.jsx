@@ -3,13 +3,17 @@ import { Package2Icon, SparklesIcon } from "lucide-react";
 import { Link } from "react-router";
 import ProductCard from "../components/ProductCard";
 import { SignInButton } from "@clerk/react";
-import React from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useProducts();
+  const productList = products ?? [];
 
-  if (error) {
+  if (isLoading && productList.length === 0) {
+    return <LoadingSpinner />;
+  }
+
+  if (error && productList.length === 0) {
     return (
       <div role="alert" className="alert alert-error">
         <span>
@@ -21,7 +25,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="spacey-10">
+    <div className="space-y-10">
       <div className="hero bg-linear-to-br from-base-300 via-base-200 to-base-300 rounded-box overflow-hidden">
         <div className="hero-content flex-col lg:flex-row-reverse gap-10 py-10">
           <div className="relative">
@@ -49,17 +53,22 @@ const HomePage = () => {
         </div>
       </div>
 
+      {error && productList.length > 0 && (
+        <div role="alert" className="alert alert-warning">
+          <span>Could not refresh products. Showing the last loaded results.</span>
+        </div>
+      )}
+
       <div>
         <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
-          <PackageIcon className="size-5 text-primary">
-            All Products
-          </PackageIcon>
+          <Package2Icon className="size-5 text-primary" />
+          All Products
         </h2>
 
-        {products.length == 0 ? (
+        {productList.length === 0 ? (
           <div className="card bg-base-300">
             <div className="card-body items-center text-center py-16">
-              <PackageIcon className="size-16 text-base-content/20" />
+              <Package2Icon className="size-16 text-base-content/20" />
               <h3 className="card-title text-base-content/50">
                 No products yet
               </h3>
@@ -73,7 +82,7 @@ const HomePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {products.map((product) => (
+            {productList.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

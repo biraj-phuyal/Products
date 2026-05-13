@@ -1,4 +1,3 @@
-import React from 'react'
 import { useEffect, useState } from "react";
 import { PaletteIcon } from "lucide-react";
 
@@ -39,7 +38,7 @@ const THEMES = [
 
 const ThemeSelector = () => {
     const[theme, setTheme] = useState(() => {
-        if (typeof window !== "undifined") {
+        if (typeof window !== "undefined") {
             return localStorage.getItem("theme") || "forest";
         }
         return "forest";
@@ -47,8 +46,8 @@ const ThemeSelector = () => {
 
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme);
-        localStorage.getItem("theme", theme);
-    });
+        localStorage.setItem("theme", theme);
+    }, [theme]);
 
     return <div className='dropdown dropdown-end'>
         <div tabIndex={0} role="button" className="btn btn-ghost btn-sm gap-1">
@@ -80,10 +79,7 @@ const ThemeSelector = () => {
             </li>
             ))}
         </ul>
-    </div>
-    return (
-    <div>ThemeSelector</div>
-    )
+    </div>;
 }
 
 export default ThemeSelector

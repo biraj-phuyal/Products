@@ -10,7 +10,7 @@ import commentRoutes from "./routes/commentRoutes"
 const app = express();
 
 app.use(cors({
-    origin: ENV.FRONTEND_URL,
+    origin: ENV.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
 }));
 app.use(clerkMiddleware());
