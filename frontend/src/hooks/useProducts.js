@@ -2,5 +2,10 @@ import {useQuery} from "@tanstack/react-query"
 import { getAllProducts } from "../lib/api"
 
 export const useProducts = () => {
-    const result = useQuery({queryFn: getAllProducts})
+    const result = useQuery({queryKey: ["products"] ,queryFn: getAllProducts})
+    return result;
 }
+
+export const useCreateProduct = () => {
+  return useMutation({ mutationFn: createProduct });
+};
