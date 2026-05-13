@@ -1,16 +1,15 @@
-import Navbar  from "./components/Navbar"
-import HomePage  from "./pages/HomePage"
-import ProductPage  from "./pages/ProductPage"
-import ProfilePage  from "./pages/ProfilePage"
-import CreatePage  from "./pages/CreatePage"
-import EditProductPage  from "./pages/EditProductPage"
-import { Routes, Route } from "react-router"
-import useAuthReq from "./hooks/useAuthReq"
-import useUserSync from "./hooks/useUserSync"
-
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import ProductPage from "./pages/ProductPage";
+import ProfilePage from "./pages/ProfilePage";
+import CreatePage from "./pages/CreatePage";
+import EditProductPage from "./pages/EditProductPage";
+import { Navigate, Routes, Route } from "react-router";
+import useAuthReq from "./hooks/useAuthReq";
+import useUserSync from "./hooks/useUserSync";
 
 function App() {
-  const {isClerkLoaded, isSignedIn} = useAuthReq();
+  const { isClerkLoaded, isSignedIn } = useAuthReq();
   useUserSync();
 
   if (!isClerkLoaded) return null;
@@ -22,12 +21,15 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/create" element={<CreatePage />} />
+          <Route
+            path="/create"
+            element={isSignedIn ? <CreatePage /> : <Navigate to={"/"} />}
+          />
           <Route path="/edit/:id" element={<EditProductPage />} />
         </Routes>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
