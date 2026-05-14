@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth, SignInButton } from "@clerk/clerk-react";
+import { useAuth, SignInButton } from "@clerk/react";
 import { useCreateComment, useDeleteComment } from "../hooks/useComments";
 import {
   SendIcon,
