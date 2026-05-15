@@ -3,6 +3,7 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getMyProducts,
   getProductById,
 } from "../lib/api";
 
@@ -32,3 +33,10 @@ export const useProduct = (id) => {
 export const useDeleteProduct = () => {
   return useMutation({ mutationFn: deleteProduct });
 };
+
+export const useMyProducts = () => {
+    return useQuery({
+        queryKey: ["myProducts"],
+        queryFn: getMyProducts,
+    });
+}
