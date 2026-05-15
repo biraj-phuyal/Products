@@ -13,8 +13,9 @@ export const createComment = async (req: Request, res: Response) => {
 
     if (!content) return res.status(400).json({ error: "Comment content is required" });
 
-    // verify product exists
-    const product = await queries.getProductById(productId);
+    // Use a minimal existence check here so creating one comment does not load
+    // the entire product and its full comment thread before the insert.
+    const product = await queries.productExists(productId);
     if (!product) return res.status(404).json({ error: "Product not found" });
 
     const comment = await queries.createComment({

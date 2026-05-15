@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { index, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -35,7 +35,10 @@ export const comments = pgTable("comments", {
     .notNull()
     .references(() => products.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
-});
+}, (table) => ({
+  productIdIdx: index("comments_product_id_idx").on(table.productId),
+  userIdIdx: index("comments_user_id_idx").on(table.userId),
+}));
 
 
 export const userRelations = relations(users, ({many}) => ({

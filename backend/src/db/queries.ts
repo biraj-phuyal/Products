@@ -66,6 +66,13 @@ export const getProductById = async (id : string) => {
     });
 };
 
+export const productExists = async (id: string) => {
+    return db.query.products.findFirst({
+        where: eq(products.id, id),
+        columns: { id: true },
+    });
+};
+
 export const getProductsByUserId = async (userId: string) => {
   return db.query.products.findMany({
     where: eq(products.userId, userId),
