@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProduct,
   deleteProduct,
   getAllProducts,
   getMyProducts,
   getProductById,
+  updateProduct,
 } from "../lib/api";
 
 export const useProducts = () => {
@@ -31,7 +32,16 @@ export const useProduct = (id) => {
 
 
 export const useDeleteProduct = () => {
-  return useMutation({ mutationFn: deleteProduct });
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: deleteProduct,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["myProducts"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        },
+    });
+   
 };
 
 export const useMyProducts = () => {
@@ -39,4 +49,8 @@ export const useMyProducts = () => {
         queryKey: ["myProducts"],
         queryFn: getMyProducts,
     });
+}
+
+export const useUpdateProduct = () => {
+    return useMutation({ mutationFn: updateProduct });
 }
