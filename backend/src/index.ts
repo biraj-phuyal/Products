@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 import {ENV} from "./config/env";
 import { clerkMiddleware } from '@clerk/express';
 import userRoutes from "./routes/userRoutes"
@@ -18,7 +19,7 @@ app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.get("/", (req, res) => {
+app.get("/api/health", (req, res) => {
     res.json({ 
     message : "Welcome",
     endpoint : {
@@ -32,6 +33,16 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/comments", commentRoutes);
+
+if (ENV.NODE_ENV === "production") {
+    const __dirName = path.resolve();
+
+    app.use(express.static(path.join(__dirName, "../frontend/dist")));
+
+    app.get("/{*any}", (req, res) => {
+        res.sendFile(path.join(__dirName, "../frontend/dist/index.html"));
+    });
+};
 
 let isShuttingDown = false;
 
