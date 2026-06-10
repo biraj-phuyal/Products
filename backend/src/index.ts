@@ -34,7 +34,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/comments", commentRoutes);
 
-if (ENV.NODE_ENV === "production") {
+/* if (ENV.NODE_ENV === "production") {
     const __dirName = path.resolve();
 
     app.use(express.static(path.join(__dirName, "../frontend/dist")));
@@ -42,7 +42,7 @@ if (ENV.NODE_ENV === "production") {
     app.get("/{*any}", (req, res) => {
         res.sendFile(path.join(__dirName, "../frontend/dist/index.html"));
     });
-};
+}; */
 
 let isShuttingDown = false;
 
