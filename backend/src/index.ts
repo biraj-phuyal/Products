@@ -19,7 +19,7 @@ app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.get("/api/health", (req, res) => {
+app.get("/", (req, res) => {
     res.json({ 
     message : "Welcome",
     endpoint : {
