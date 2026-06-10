@@ -8,9 +8,6 @@
   "assets": {
     "directory": "frontend/dist"
   },
-  "vars": {
-    "VITE_API_URL": "https://products-ub2ju.sevalla.app/api",
-    },
     "workers_dev": false,
   "compatibility_flags": [
     "nodejs_compat"
