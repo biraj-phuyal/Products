@@ -6,7 +6,8 @@
     "enabled": true
   },
   "assets": {
-    "directory": "frontend/dist"
+    "directory": "frontend/dist",
+    "binding": "ASSETS"
   },
   "vars": {
     "VITE_API_URL": "https://products-ub2ju.sevalla.app/api",
