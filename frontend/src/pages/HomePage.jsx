@@ -2,11 +2,12 @@ import { useProducts } from "../hooks/useProducts";
 import { Package2Icon, SparklesIcon } from "lucide-react";
 import { Link } from "react-router";
 import ProductCard from "../components/ProductCard";
-import { SignInButton } from "@clerk/react";
+import { SignInButton, useAuth } from "@clerk/react";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useProducts();
+  const { isSignedIn } = useAuth();
   const productList = products ?? [];
 
   if (isLoading && productList.length === 0) {
@@ -43,12 +44,19 @@ const HomePage = () => {
             <p className="py-4 text-base-content/60">
               Upload, discover, and connect with creators.
             </p>
-            <SignInButton mode="modal">
-              <button className="btn btn-primary">
+            {isSignedIn ? (
+              <Link to="/create" className="btn btn-primary">
                 <SparklesIcon className="size-4" />
                 Start Selling
-              </button>
-            </SignInButton>
+              </Link>
+            ) : (
+              <SignInButton mode="modal">
+                <button className="btn btn-primary">
+                  <SparklesIcon className="size-4" />
+                  Start Selling
+                </button>
+              </SignInButton>
+            )}
           </div>
         </div>
       </div>
